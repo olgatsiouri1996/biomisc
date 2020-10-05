@@ -15,6 +15,6 @@ df_merge_col = pd.merge(df1, df2, on= args['header'], how='inner')
 # export
 with open(args['output'], 'a') as f:
     f.write(
-        df_merge_col.to_csv(header = True, index = False, doublequote= False)
+        df_merge_col.to_csv(header = True, index = False, doublequote= False, line_terminator= '\n')
     )
 
