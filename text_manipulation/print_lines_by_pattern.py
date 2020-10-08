@@ -3,7 +3,7 @@ import argparse
 import pandas as pd
 # input parameters
 ap = argparse.ArgumentParser()
-ap.add_argument("-in", "--input", required=True, help=" input txt/tsv file")
+ap.add_argument("-in", "--input", required=True, help="input txt/tsv file")
 ap.add_argument("-out", "--output", required=True, help="output txt/tsv file")
 ap.add_argument("-p", "--pattern", required=True, help="specify the pattern to print the lines that have it(put the pattern into doublequotes)")
 ap.add_argument("-c", "--column", required=True, help="specify the column number to search for the pattern(starts from 0)")
