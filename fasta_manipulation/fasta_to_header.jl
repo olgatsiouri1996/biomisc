@@ -5,7 +5,7 @@ print("print the full header line from fasta file\nusage: julia fasta_to_header.
 reader = open(FASTA.Reader,ARGS[1])
 open(ARGS[2],"a") do io
    for record in reader
-    println(io,FASTA.identifier(record),FASTA.description(record))
-    end
+      println(io,FASTA.identifier(record),"\t",FASTA.description(record))
+   end
 end
 close(reader)
