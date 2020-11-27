@@ -1,2 +1,2 @@
-# biomisc [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4279850.svg)](https://doi.org/10.5281/zenodo.4279850)
+# biomisc [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4292820.svg)](https://doi.org/10.5281/zenodo.4292820)
 collection of  miscellaneous command line bioinformatic scripts(see the wiki page for documentation and depedences) 
