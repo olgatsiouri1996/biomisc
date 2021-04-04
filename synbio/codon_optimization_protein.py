@@ -5,9 +5,9 @@ from synbiopython.codon import table, taxonomy_utils, utils
 import sys
 # imput parameters
 ap = argparse.ArgumentParser()
-ap.add_argument("-in", "--input", required=True,  help="input multi or single fasta file")
+ap.add_argument("-in", "--input", required=True,  help="input multi or single fasta file with protein/proteins")
 ap.add_argument("-taxid", "--taxid", required=True, help="taxonomy id to retrieve the codon table for optimization")
-ap.add_argument("-out", "--output", required=True,  help="output single or multi fasta file")
+ap.add_argument("-out", "--output", required=True,  help="output single or multi fasta file with cds/cds's")
 args = vars(ap.parse_args())
 # main
     name = taxonomy_utils.get_organism_name(args['taxid'])
