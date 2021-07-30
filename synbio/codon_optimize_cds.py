@@ -1,8 +1,9 @@
 # python3
 import argparse
 from Bio import SeqIO
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 from dnachisel import *
-import sys
 # imput parameters
 ap = argparse.ArgumentParser()
 ap.add_argument("-fa", "--fasta", required=True, help="input single or multi fasta file")
@@ -10,11 +11,13 @@ ap.add_argument("-org","--organism", required=True, help="organism to input(use 
 ap.add_argument("-opt","--optimized", required=True, help="optimized fasta file")
 args = vars(ap.parse_args())
 # main
-sys.stdout = open(args['optimized'], 'a')
+optimized_seqs = [] # setup an empty list
 for record in SeqIO.parse(args['fasta'], "fasta"):
     problem = DnaOptimizationProblem(sequence=str(record.seq),
     objectives=[CodonOptimize(species= args['organism'])])
     problem.optimize()
-    print(">"+record.id,problem.sequence, sep='\n')
-sys.stdout.close()
+    # add this record to the list
+    optimized_seqs.append(SeqRecord(Seq(problem.sequence),id=record.id,description=""))
+# export to fasta
+SeqIO.write(optimized_seqs, args['optimized'], "fasta")
 
