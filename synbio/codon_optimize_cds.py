@@ -14,6 +14,7 @@ args = vars(ap.parse_args())
 optimized_seqs = [] # setup an empty list
 for record in SeqIO.parse(args['fasta'], "fasta"):
     problem = DnaOptimizationProblem(sequence=str(record.seq),
+    constraints=[EnforceTranslation()],
     objectives=[CodonOptimize(species= args['organism'])])
     problem.optimize()
     # add this record to the list
