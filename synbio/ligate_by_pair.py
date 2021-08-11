@@ -7,8 +7,8 @@ from Bio.SeqRecord import SeqRecord
 from Bio.Alphabet import generic_dna
 # imput parameters
 ap = argparse.ArgumentParser(description="ligate linear vector with DNA insert by pair from each input multi-fasta file")
-ap.add_argument("-vr", "--vector", required=True, help="linear vectors (multi-fasta file the order is inportant as the 1st vector matches the 1st insert in the file etc)")
-ap.add_argument("-in", "--insert", required=True, help="sequences to insert in the vectors (multi-fasta file the order is inportant as the 1st insert matches the 1st vector in the file etc)")
+ap.add_argument("-vr", "--vector", required=True, help="linear vectors (multi-fasta file the order is important as the 1st vector matches the 1st insert in the file etc)")
+ap.add_argument("-in", "--insert", required=True, help="sequences to insert in the vectors (multi-fasta file the order is important as the 1st insert matches the 1st vector in the file etc)")
 ap.add_argument("-out", "--output", required=True, help="output genbank file with circular sequences")
 args = vars(ap.parse_args())
 # main 
