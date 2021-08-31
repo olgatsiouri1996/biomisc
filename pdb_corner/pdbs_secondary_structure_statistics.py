@@ -9,13 +9,13 @@ ap.add_argument("-out", "--output", required=True, help="output txt file")
 args = vars(ap.parse_args())
 # retrieve fasta file names
 file_list = []
-for filename in os.listdir(str(os.getcwd())):
+for filename in sorted(os.listdir(str(os.getcwd()))):
     if filename.endswith(".pdb"):
         file_list.append(filename.split(".pdb")[0])
 # main
 df_list = []  # setup empty list
 # retrieves each pdb file on the current directory and calculates the secondary structure percentage
-for filename in os.listdir(str(os.getcwd())):
+for filename in sorted(os.listdir(str(os.getcwd()))):
     if filename.endswith(".pdb"):
         parser = PDBParser()
         s = parser.get_structure("name", filename)
