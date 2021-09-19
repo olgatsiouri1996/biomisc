@@ -4,25 +4,24 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from Bio.Alphabet import generic_dna
+from Bio import SeqFeature
 # imput parameters
-ap = argparse.ArgumentParser(description="ligate linear vector with DNA insert")
-ap.add_argument("-vr", "--vector", required=True, help="linear vector/s (single or multi fasta file)")
-ap.add_argument("-in", "--insert", required=True, help="sequence/s to insert in the vector(single or multi fasta file)")
-ap.add_argument("-out", "--output", required=True, help="output genbank file with circular sequence/s")
+ap = argparse.ArgumentParser(description="ligate vector with insert")
+ap.add_argument("-vr", "--vector", required=True, help="vector in genbank format")
+ap.add_argument("-in", "--insert", required=True, help="sequence to insert in the vector in fasta format")
+ap.add_argument("-out", "--output", required=True, help="output genbank file with circular sequence")
 args = vars(ap.parse_args())
 # main 
 # linear vector
-output_handle = open(args['output'], "w")
-records = [] # setup an empty list
-for plasmid in SeqIO.parse(args['vector'], "fasta"):
-    x = str(plasmid.seq)
-    # DNA insert
-    for record in SeqIO.parse(args['insert'], "fasta"):
-        y = str(record.seq)
-    # merge
-        seqad = y + x
-        # add this record to the list
-        records.append(SeqRecord(Seq(seqad,generic_dna),id='_'.join([record.id,plasmid.id]),description="",annotations={"topology":"circular"}))
-# export to fasta
-SeqIO.write(records,output_handle, "genbank")
-output_handle.close()
+plasmid = SeqIO.read(args['vector'], "genbank")
+x = str(plasmid.seq)
+# DNA insert
+record = SeqIO.read(args['insert'], "fasta")
+y = str(record.seq)
+# merge
+seqad = x + y
+# add this record to the list
+ligated = SeqRecord(Seq(seqad,generic_dna),id='_'.join([record.id,plasmid.id]),description="",annotations={"topology":"circular"})
+ligated.features = plasmid.features
+# export to genbank
+SeqIO.write(ligated,args['output'], "genbank")
