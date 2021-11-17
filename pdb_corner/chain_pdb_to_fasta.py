@@ -1,24 +1,25 @@
 # python3
 import argparse
 from Bio.PDB import *
-import sys
+from Bio import SeqIO
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 # input parameters
 ap = argparse.ArgumentParser()
-ap.add_argument("-pdb", "--input_pdb", required=True, help="input pdb file")
-ap.add_argument("-model", "--pdb_model", required=True, help="model from pdb file to select(integer)")
-ap.add_argument("-chain", "--pdb_chain", required=True, help="chain from pdb file to select")
-ap.add_argument("-id", "--pdb_id", required=True, help="pdb id of the protein structure")
-ap.add_argument("-fasta", "--fasta_file", required=True, help="output fasta file")
+ap.add_argument("-pdb", "--pdb", required=True, help="input pdb file")
+ap.add_argument("-model", "--model",default=0, required=False, help="model from pdb file to select(integer). Default is 0(1 model only)")
+ap.add_argument("-chain", "--chain", required=True, help="chain from pdb file to select")
 args = vars(ap.parse_args())
-#main
-def seq_from_pdb(structure):
-    ppb = PPBuilder()
-    for pp in ppb.build_peptides(structure):
-        print(">"+args['pdb_id']+"_"+args['pdb_chain'],pp.get_sequence(), sep="\n")
-
+# main
+# select chain
 parser = PDBParser()
-s = parser.get_structure("name", args['input_pdb'])
-fill = s[int(args['pdb_model'])][args['pdb_chain']]
-sys.stdout = open(args['fasta_file'], 'a')
-seq_from_pdb(fill)
-sys.stdout.close()
+s = parser.get_structure("name", args['pdb'])
+fill = s[int(args['model'])][args['chain']]
+# retrieve the pdb id of the input file
+pdb_id = str(args['pdb']).split(".")[0]
+# export to fasta
+ppb = PPBuilder()
+for pp in ppb.build_peptides(fill):
+    record = SeqRecord(Seq(str(pp.get_sequence())),id="".join([str(pdb_id),"_",str(args['chain'])]),description="")
+    SeqIO.write(record, "".join([str(pdb_id),"_",str(args['chain']),".fasta"]), "fasta")
+
