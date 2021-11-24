@@ -32,21 +32,17 @@ if args['program'] == 1:
     else:
         print("-start parameter must be a positive integer")
         exit(1)
-    # fix the index for end parameter
-    if args['end'] > 0:
-        aa_end = args['end'] -1
-    else:
-        aa_end = args['end']
+    # add end parameter
+    aa_end = args['end']
 else:
-    
     # fix the index for start parameter
     if args['start'] > 0:
         aa_start = args['start'] -1
     else:
         print("-start parameter must be a positive integer")
         exit(1)
-    # fix the index for end parameter
-    args['end'] = len(aa_chain) -1
+    # add end parameter according to program 2
+    args['end'] = len(aa_chain)
     aa_end = args['end']
 # subset based on aa in chain
 sub_seq = aa_chain[aa_start:aa_end]
