@@ -1,17 +1,16 @@
 # python3
-import itertools
+import os
 import argparse
 from Bio import SeqIO
-from Bio.Seq import Seq
-from Bio.SeqRecord import SeqRecord
 import pandas as pd
-# input arguments
-ap = argparse.ArgumentParser(description="convert each row of a tabular file with the fasta headers and sequences in each row in a multi-fasta file with trimmed sequences")
-ap.add_argument("-in", "--input", required=True, help="input txt file")
+# input parameters
+ap = argparse.ArgumentParser()
+ap.add_argument("-in","--input", required=False, help="input multi-fasta file")
 ap.add_argument("-start", "--start", required=False, default=1, type=int, help="region to start writing the fasta file(default 1)")
 ap.add_argument("-stop", "--stop", required=False, type=int, help="region to stop writing the fasta file(it can be both a positive and  a negative number)")
 ap.add_argument("-pro", "--program", required=False,default=1, type=int, help="program to choose 1) add both start and stop location 2) the stop location with be that of the sequence length. Default is 1")
-ap.add_argument("-out", "--output", required=True, help="output multi-fasta file")
+ap.add_argument("-type", "--type", required=False,default=1, type=int, help="type of fasta to import 1) 1 multi-fasta file 2)  many single-fasta files. Default is 1")
+ap.add_argument("-out","--output", required=True, help="output txt file")
 args = vars(ap.parse_args())
 # main
 # create function to trim fasta records
@@ -38,14 +37,29 @@ def fastatrim(fastaseq):
         seq_end = args['stop']
     # subset each fasta record
     return fastaseq[seq_start:seq_end]
-df = pd.read_csv(args['input'], header=None, sep="\t")
-# select ids and sequence columns, convert to lists
-headers = df.iloc[:,0].values.tolist()
-sequences = df.iloc[:,1].values.tolist()
-# setup empty list
-seqs_for_fasta = []
-# iter elements on pairs to export in single fasta files
-for (ids, seq) in zip(headers, sequences):
-	seqs_for_fasta.append(SeqRecord(Seq(fastatrim(str(seq))),id=str(ids),description=""))
-	SeqIO.write(seqs_for_fasta, args['output'], "fasta")
-
+# setup empty lists
+seqs = []
+ids = []
+# choose fasta type to import
+if args['type'] == 1:     
+   # import multi-fasta file
+    for record in SeqIO.parse(args['input'], "fasta"):
+        seqs.append(fastatrim(record.seq))
+        ids.append(record.id)
+else:
+    # import each fasta file from the working directory
+    for filename in sorted(os.listdir(str(os.getcwd()))):
+        if filename.endswith(".fa") or filename.endswith(".fasta"):
+            # read each file, trim and add to list
+            record = SeqIO.read(filename, "fasta")
+            seqs.append(fastatrim(record.seq))
+            ids.append(record.id)     
+# put the 2 list in a data frame of 2 columns
+dfasta = pd.DataFrame()
+dfasta['id'] = ids
+dfasta['seq'] = seqs
+# export data frame to a tabular txt file
+with open(args['output'], 'a') as f:
+    f.write(
+        dfasta.to_csv(header = False, index = False, sep= "\t", line_terminator= '\n')
+    )       
