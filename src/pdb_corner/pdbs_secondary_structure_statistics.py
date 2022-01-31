@@ -29,13 +29,11 @@ for filename in sorted(os.listdir(str(os.getcwd()))):
         df1 = df1['struct_list'].value_counts()
         df1 = round((df1 / df1.sum(axis=0)) * 100, 2)
         df_list.append(df1)
-        del df
-        struct_list.clear()
-        del df1
+        del df; struct_list.clear(); del df1
 # concatenate all dataframes into 1
 stats = pd.concat(df_list,axis=1)
 stats.columns = file_list
-stats = stats.fillna(stats)
+stats = stats.fillna(0)
 # convert rows to columns
 stats_t = stats.T
 # export
