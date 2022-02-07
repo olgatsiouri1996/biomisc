@@ -6,7 +6,7 @@ import pandas as pd
 ap = argparse.ArgumentParser()
 ap.add_argument("-in", "--input_file", required=True, help="input fasta file")
 ap.add_argument("-pro", "--program",type=int, default=1, required=False, help=" program to choose the output format 1) fasta, 2) txt file with headers 3) tab file with fasta headers and aa content percentage as columns. Defaults to 1)")
-ap.add_argument("-max", "--max_aa", required=False, default=101, help="max threshold of aa content, type = float. Default is 101")
+ap.add_argument("-max", "--max_aa", required=False, default=100, help="max threshold of aa content, type = float. Default is 100")
 ap.add_argument("-min", "--min_aa", required=False, default=0, help="min threshold of aa content, type = float.  Default is 0")
 ap.add_argument("-aa", "--aa_type", required=True, help="aa to search the content for")
 ap.add_argument("-headers", "--fasta_headers", required=False, help="file to save the output fasta headers")
@@ -23,7 +23,7 @@ program = args['program']
 if program == 1:
     sequences = []  # setup an empty list
     for record in SeqIO.parse(args['input_file'], "fasta"):
-        if float(args['min_aa']) < aa_content(record.seq) < float(args['max_aa']):
+        if float(args['min_aa']) <= aa_content(record.seq) <= float(args['max_aa']):
             # add this record to the list
             sequences.append(record)
     # export to fasta
@@ -32,7 +32,7 @@ if program == 1:
 elif program == 2:
     headers = []  # setup an empty list
     for record in SeqIO.parse(args['input_file'], "fasta"):
-        if float(args['min_aa']) < aa_content(record.seq) < float(args['max_aa']):
+        if float(args['min_aa']) <= aa_content(record.seq) <= float(args['max_aa']):
             # add this record to the list
             headers.append(record.id)
     # export to txt
@@ -43,7 +43,7 @@ else:
     content = []
     headers = []  # setup empty lists
     for record in SeqIO.parse(args['input_file'], "fasta"):
-        if float(args['min_aa']) < aa_content(record.seq) < float(args['max_aa']):
+        if float(args['min_aa']) <= aa_content(record.seq) <= float(args['max_aa']):
             # add this record to the list
             headers.append(record.id)
             content.append(aa_content(record.seq))
