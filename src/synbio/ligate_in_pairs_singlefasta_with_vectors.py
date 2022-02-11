@@ -22,13 +22,13 @@ gb_features = []
 # linear vectors
 # import each genbank file from the list
 for i in gb_list:
-    plasmid = SeqIO.read(gb_list[gb_list.index(i)], "genbank")
+    plasmid = SeqIO.read(i, "genbank")
     gb_seqs.append(str(plasmid.seq))
     gb_features.append(plasmid.features)
 # DNA insert
 # import each fasta file from the list
 for i in fasta_list:
-    record = SeqIO.read(fasta_list[fasta_list.index(i)], "fasta")
+    record = SeqIO.read(i, "fasta")
     fasta_seqs.append(str(record.seq))
 # iterate all below lists in pairs
 for (a,b,c,d,e) in zip(gb_list,fasta_list,gb_seqs,gb_features,fasta_seqs):
