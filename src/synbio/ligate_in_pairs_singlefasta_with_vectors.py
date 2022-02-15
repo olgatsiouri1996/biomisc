@@ -5,7 +5,6 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from Bio import SeqFeature
-import pandas as pd
 # imput parameters
 ap = argparse.ArgumentParser(description="ligate in pairs vectors in genbank format with annotations, with inserts in single-fasta files")
 ap.add_argument("-txt", "--txt_file", required=False, help="input 2-column tab-seperated txt file with genbank and fasta filenames respectively in each row(with extensions .gb, .gbk, .fa, .fasta )")
