@@ -1,19 +1,18 @@
 # python3
 import argparse
 import os
+from Bio import SeqIO
 # input parameters
 ap = argparse.ArgumentParser()
-ap.add_argument("-dir", "--directory", required=True,  help="input directory with fasta files")
 ap.add_argument("-fa", "--multifasta", required=True,  help="output multi-fasta file")
 args = vars(ap.parse_args())
 # main
-DIR = args['directory']
-oh = open( args['multifasta'], 'w')
-for f in os.listdir(DIR):
-    fh = open(os.path.join(DIR, f))
-    for line in fh:
-        oh.write(line)
-    fh.close()
-oh.close()
-
-
+# creat list
+records = []
+# import each fasta file from the working directory
+for filename in sorted(os.listdir(str(os.getcwd()))):
+    if filename.endswith(".fa") or filename.endswith(".fasta"):
+        record = SeqIO.read(filename, "fasta")
+        records.append(record)
+# export all SeqRecords to a multi-fasta file
+SeqIO.write(records,args['multifasta'], "fasta")
