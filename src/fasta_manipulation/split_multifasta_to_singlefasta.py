@@ -1,4 +1,5 @@
 # python3
+import os
 import argparse
 from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
@@ -6,8 +7,11 @@ from Bio.Seq import Seq
 # imput parameters
 ap = argparse.ArgumentParser()
 ap.add_argument("-mfa", "--multifasta", required=True,  help="input multi-fasta file to split to single-fasta")
+ap.add_argument("-dir", "--directory", required=False, type=str, help="output directory to save the single-fasta files")
 args = vars(ap.parse_args())
 # main
-for record in SeqIO.parse(args['multifasta'], "fasta"):
-	one_seq = SeqRecord(Seq(record.seq),id=record.id,description="")
-	SeqIO.write(one_seq, ''.join([record.id,".fasta"]), "fasta")
+# set working directory
+records = SeqIO.parse(args['multifasta'], "fasta")
+os.chdir(args['directory'])
+for record in records:
+	SeqIO.write(record, ''.join([record.id,".fasta"]), "fasta")
