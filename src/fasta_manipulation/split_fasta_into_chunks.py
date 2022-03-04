@@ -21,7 +21,7 @@ chunks = []# setup empty lists
 for record in SeqIO.parse(args['input_file'], "fasta"):
 	for i in range(0, len(record.seq) - int(args['window_size']) + 1, int(args['step_size'])):
 		seqs.append(record.seq[i:i + int(args['window_size'])])
-		headers.append('_'.join([record.id,str(i)]))
+		headers.append('_'.join([record.id,str(i + 1)]))
 # export to multi or single-fasta
 for (seq, header) in zip(seqs,headers):
 	chunks.append(SeqRecord(Seq(str(seq)),id=str(header),description=""))
