@@ -8,7 +8,8 @@ from Bio import SeqFeature
 import  pandas as pd
 # imput parameters
 ap = argparse.ArgumentParser(description="ligate in pairs vectors in genbank format with annotations, with inserts in single-fasta files")
-ap.add_argument("-txt", "--txt_file", required=False, help="input 2-column tab-seperated txt file with genbank and fasta filenames respectively in each row(with extensions .gb, .gbk, .fa, .fasta )")
+ap.add_argument("-txt", "--txt_file", required=True, help="input 2-column tab-seperated txt file with genbank and fasta filenames respectively in each row(with extensions .gb, .gbk, .fa, .fasta )")
+ap.add_argument("-dir", "--directory", required=False, default='.', type=str, help="output directory to save the output genbank files. Default is in the current directory")
 args = vars(ap.parse_args())
 # main
 # inport txt file and convert each column to list
@@ -30,6 +31,8 @@ for i in gb_list:
 for i in fasta_list:
     record = SeqIO.read(i, "fasta")
     fasta_seqs.append(str(record.seq))
+# select directory for output genbank files
+os.chdir(args['directory'])
 # iterate all below lists in pairs
 for (a,b,c,d,e) in zip(gb_list,fasta_list,gb_seqs,gb_features,fasta_seqs):
     # merge
