@@ -1,5 +1,7 @@
 # python3
 import os
+import warnings
+from Bio import BiopythonWarning
 import argparse
 from Bio import SeqIO
 from Bio.Seq import Seq
@@ -12,6 +14,8 @@ ap.add_argument("-txt", "--txt_file", required=True, help="input 2-column tab-se
 ap.add_argument("-dir", "--directory", required=False, default='.', type=str, help="output directory to save the output genbank files. Default is in the current directory")
 args = vars(ap.parse_args())
 # main
+# remove warnings
+warnings.simplefilter('ignore',BiopythonWarning)
 # inport txt file and convert each column to list
 df_txt = pd.read_csv(args['txt_file'], header=None, sep="\t")
 gb_list = df_txt.iloc[:,0].values.tolist()
