@@ -7,7 +7,7 @@ from Bio.Seq import Seq
 # imput parameters
 ap = argparse.ArgumentParser()
 ap.add_argument("-mfa", "--multifasta", required=True,  help="input multi-fasta file to split to single-fasta")
-ap.add_argument("-dir", "--directory", required=True, type=str, help="output directory to save the single-fasta files")
+ap.add_argument("-dir", "--directory", required=False, default='.', type=str, help="output directory to save the single-fasta files. Default is the current directory")
 args = vars(ap.parse_args())
 # main
 # set working directory

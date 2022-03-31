@@ -11,7 +11,7 @@ ap.add_argument("-out", "--output_file", required=False, help="output multi-fast
 ap.add_argument("-step", "--step_size", required=True, help="step size for chunk creation, type = integer")
 ap.add_argument("-win", "--window_size", required=True, help="window size for chunk creation, type = integer")
 ap.add_argument("-pro", "--program", type=int, default=1, required=False, help="program output to select 1) 1 multi-fasta file 2) many single-fasta files. Default is 1")
-ap.add_argument("-dir", "--directory", required=False, type=str, help="output directory to save the single-fasta files")
+ap.add_argument("-dir", "--directory", required=False,default='.', type=str, help="output directory to save the single-fasta files. Default is the current directory")
 args = vars(ap.parse_args())
 # main
 seqs = []

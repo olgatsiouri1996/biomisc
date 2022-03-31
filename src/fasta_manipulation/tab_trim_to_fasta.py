@@ -1,6 +1,7 @@
 # python3
 import itertools
 import argparse
+import os
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
@@ -13,6 +14,7 @@ ap.add_argument("-stop", "--stop", required=False, type=int, help="region to sto
 ap.add_argument("-pro", "--program", required=False,default=1, type=int, help="program to choose 1) add both start and stop location 2) the stop location with be that of the sequence length. Default is 1")
 ap.add_argument("-type", "--type", required=False,default=1, type=int, help="type of fasta to export 1) 1 multi-fasta file 2)  many single-fasta files. Default is 1")
 ap.add_argument("-out", "--output", required=False,default=1, type=int, help="output multi-fasta file")
+ap.add_argument("-dir", "--directory", required=False,default='.', help="directory to export the output fasta files. Default is the current directory")
 args = vars(ap.parse_args())
 # main
 # create function to trim fasta records
@@ -52,6 +54,8 @@ if args['type'] == 1:
             seqs_for_fasta.append(SeqRecord(Seq(fastatrim(str(seq))),id=str(ids),description=""))
             SeqIO.write(seqs_for_fasta, args['output'], "fasta")
 else:
+    # select output directory
+    os.chdir(args['directory'])
     # iter elements on pairs to export in single fasta files
     for (ids, seq) in zip(headers, sequences):
             seq_for_fasta=SeqRecord(Seq(fastatrim(str(seq))),id=str(ids),description="")
