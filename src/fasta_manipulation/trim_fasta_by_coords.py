@@ -8,7 +8,7 @@ import  pandas as pd
 # input parameters
 ap = argparse.ArgumentParser()
 ap.add_argument("-in", "--input", required=False, help="input fasta file")
-ap.add_argument("-coords", "--coordinates", required=True, help="input 3-column tab-seperated txt file with id, start and end positions respectively in each row")
+ap.add_argument("-coords", "--coordinates", required=True, help="input 4-column tab-seperated txt file with id, start, end positions and strand(+, -) respectively in each row")
 ap.add_argument("-type", "--type", required=False,default=1, type=int, help="type of fasta to import 1) 1 multi-fasta file 2)  many single-fasta files. Default is 1")
 ap.add_argument("-outdir", "--outdir", required=False, type=str, default='.', help="directory to save output fasta files")
 ap.add_argument("-out", "--output", required=False, help="output multi-fasta file")
@@ -20,6 +20,21 @@ ids = df_txt.iloc[:,0].values.tolist()
 seq_start = df_txt.iloc[:,1].values.tolist()
 seq_start[:] = [i - 1 for i in seq_start]
 seq_end = df_txt.iloc[:,2].values.tolist()
+seq_strand = df_txt.iloc[:,3].values.tolist()
+# create function to choose strand from
+def choose_strand(seq,strand):
+    if strand == "+":
+        rec=str(seq)
+    else:
+        rec=str(Seq(seq).complement())
+
+    return rec
+# create function to rename strand
+def rename_strand(strand):
+    if strand == "+":
+        return "plus"
+    else:
+        return "minus"
 # setup empty lists
 records = []
 trimmed_records = []
@@ -31,8 +46,8 @@ if args['type'] == 1:
             if i == record.id:
                 records.append(record)
     # iterate all below lists in pairs
-    for (a, b, c) in zip(records, seq_start, seq_end):
-        trimmed_records.append(SeqRecord(Seq(str(a.seq)[int(b):int(c)]), id='_'.join([str(a.id),str(b + 1),str(c)]), description=""))
+    for (a, b, c, d) in zip(records, seq_start, seq_end, seq_strand):
+        trimmed_records.append(SeqRecord(Seq(choose_strand(str(a.seq),str(d))[int(b):int(c)]), id='_'.join([str(a.id),str(b + 1),str(c),rename_strand(str(d))]), description=""))
     # export to fasta
     SeqIO.write(trimmed_records, args['output'], "fasta")
 else:
@@ -46,7 +61,7 @@ else:
     # select directory to save the output files
     os.chdir(args['outdir'])
     # iterate all below lists in pairs
-    for (a, b, c) in zip(records, seq_start, seq_end):
-        trimmed_record = SeqRecord(Seq(str(a.seq)[int(b):int(c)]), id='_'.join([str(a.id),str(b + 1),str(c)]), description="")
+    for (a, b, c, d) in zip(records, seq_start, seq_end, seq_strand):
+        trimmed_record = SeqRecord(Seq(choose_strand(str(a.seq),str(d))[int(b):int(c)]), id='_'.join([str(a.id),str(b + 1),str(c),rename_strand(str(d))]), description="")
         # export to fasta
         SeqIO.write(trimmed_record, "".join([trimmed_record.id,".fasta"]), "fasta")
