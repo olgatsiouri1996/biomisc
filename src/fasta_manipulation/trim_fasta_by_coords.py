@@ -1,19 +1,18 @@
 # python3
 import os
+import sys
 import argparse
-from Bio import SeqIO
-from Bio.Seq import Seq
-from Bio.SeqRecord import SeqRecord
+from pyfaidx import Fasta
 import  pandas as pd
 # input parameters
 ap = argparse.ArgumentParser()
 ap.add_argument("-in", "--input", required=False, help="input fasta file")
 ap.add_argument("-coords", "--coordinates", required=True, help="input 4-column tab-seperated txt file with id, start, end positions and strand(+, -) respectively in each row")
-ap.add_argument("-type", "--type", required=False,default=1, type=int, help="type of fasta to import 1) 1 multi-fasta file 2)  many single-fasta files. Default is 1")
-ap.add_argument("-outdir", "--outdir", required=False, type=str, default='.', help="directory to save output fasta files")
 ap.add_argument("-out", "--output", required=False, help="output multi-fasta file")
 args = vars(ap.parse_args())
 # main
+# create function to split the input sequence based on a specific number of characters(60)
+def split_every_60(s): return [str(s)[i:i+60] for i in range(0,len(str(s)),60)]
 # inport txt file and convert each column to list
 df_txt = pd.read_csv(args['coordinates'], header=None, sep="\t")
 ids = df_txt.iloc[:,0].values.tolist()
@@ -21,47 +20,17 @@ seq_start = df_txt.iloc[:,1].values.tolist()
 seq_start[:] = [i - 1 for i in seq_start]
 seq_end = df_txt.iloc[:,2].values.tolist()
 seq_strand = df_txt.iloc[:,3].values.tolist()
-# create function to choose strand from
-def choose_strand(seq,strand):
-    if strand == "+":
-        rec=str(seq)
-    else:
-        rec=str(Seq(seq).complement())
-
-    return rec
-# create function to rename strand
-def rename_strand(strand):
-    if strand == "+":
-        return "plus"
-    else:
-        return "minus"
-# setup empty lists
-records = []
+# setup empty list
 trimmed_records = []
-# choose fasta type to import
-if args['type'] == 1:    
-    # iterate for each record
-    for i in ids:
-        for record in SeqIO.parse(args['input'], "fasta"):
-            if i == record.id:
-                records.append(record)
-    # iterate all below lists in pairs
-    for (a, b, c, d) in zip(records, seq_start, seq_end, seq_strand):
-        trimmed_records.append(SeqRecord(Seq(choose_strand(str(a.seq),str(d))[int(b):int(c)]), id='_'.join([str(a.id),str(b + 1),str(c),rename_strand(str(d))]), description=""))
-    # export to fasta
-    SeqIO.write(trimmed_records, args['output'], "fasta")
-else:
-    # import each fasta file from the working directory
-    os.chdir(str(os.getcwd()))
-    for i in ids:
-        # read each file
-        record = SeqIO.read(''.join([i,".fasta"]), "fasta")
-        # add this record to the lists
-        records.append(record)
-    # select directory to save the output files
-    os.chdir(args['outdir'])
-    # iterate all below lists in pairs
-    for (a, b, c, d) in zip(records, seq_start, seq_end, seq_strand):
-        trimmed_record = SeqRecord(Seq(choose_strand(str(a.seq),str(d))[int(b):int(c)]), id='_'.join([str(a.id),str(b + 1),str(c),rename_strand(str(d))]), description="")
-        # export to fasta
-        SeqIO.write(trimmed_record, "".join([trimmed_record.id,".fasta"]), "fasta")
+# import fasta file
+features = Fasta(args['input'])
+# iterate all below lists in pairs
+sys.stdout = open(args['output'], 'a')
+for (a, b, c, d) in zip(ids, seq_start, seq_end, seq_strand):
+    if str(d) == "+":
+        print(''.join([">",str(a),"_",str(int(b) + 1),"_",str(c)]))
+        print('\n'.join(split_every_60(features[str(a)][int(b):int(c)].seq)))
+    else:
+        print(''.join([">",str(a),"_",str(int(b) + 1),"_",str(c),"_","complement"]))
+        print('\n'.join(split_every_60(features[str(a)][int(b):int(c)].complement.seq)))
+sys.stdout.close()
