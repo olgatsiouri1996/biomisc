@@ -1,5 +1,4 @@
 # python3
-import os
 import sys
 import argparse
 from pyfaidx import Fasta
