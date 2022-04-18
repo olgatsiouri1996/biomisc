@@ -5,9 +5,9 @@ from pyfaidx import Fasta
 import  pandas as pd
 # input parameters
 ap = argparse.ArgumentParser()
-ap.add_argument("-in", "--input", required=False, help="input fasta file")
+ap.add_argument("-in", "--input", required=True, help="input fasta file")
 ap.add_argument("-coords", "--coordinates", required=True, help="input 4-column tab-seperated txt file with id, start, end positions and strand(+, -) respectively in each row")
-ap.add_argument("-out", "--output", required=False, help="output multi-fasta file")
+ap.add_argument("-out", "--output", required=True, help="output multi-fasta file")
 args = vars(ap.parse_args())
 # main
 # create function to split the input sequence based on a specific number of characters(60)
@@ -19,8 +19,6 @@ seq_start = df_txt.iloc[:,1].values.tolist()
 seq_start[:] = [i - 1 for i in seq_start]
 seq_end = df_txt.iloc[:,2].values.tolist()
 seq_strand = df_txt.iloc[:,3].values.tolist()
-# setup empty list
-trimmed_records = []
 # import fasta file
 features = Fasta(args['input'])
 # iterate all below lists in pairs
