@@ -10,7 +10,7 @@ from Bio import BiopythonWarning
 ap = argparse.ArgumentParser()
 ap.add_argument("-pdb", "--pdbdir", required=False, type=str, default='.', help=" directory containing the input pdb files(relative path in relation to your output directory). Defaults to the current directory")
 ap.add_argument("-txt", "--txtfile", required=True, help="4 column tabular txt file with pdb filename, chain, start and end position columns respectively")
-ap.add_argument("-out", "--outdir", required=False, type=str, default='.', help=" directory to save the output pdb files(relative path in relation to the directory containing the input pdb files). Defaults to the current directory")
+ap.add_argument("-out", "--outdir", required=False, type=str, default='.', help="program's working directory(use cd) that is used to save the output pdb files(relative path in relation to the directory containing the input pdb files). Defaults to the current directory")
 args = vars(ap.parse_args())
 # main
 # ignore warnings
