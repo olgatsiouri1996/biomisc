@@ -2,6 +2,8 @@
 import argparse
 import Bio
 from Bio.PDB import *
+import warnings
+from Bio import BiopythonWarning
 # input parameters
 ap = argparse.ArgumentParser()
 ap.add_argument("-in", "--input_file", required=True, help="input pdb file with 1 model")
@@ -9,6 +11,8 @@ ap.add_argument("-chain", "--pdb_chain", required=True, help="chain from pdb fil
 ap.add_argument("-out", "--output_file", required=True, help="output pdb file")
 args = vars(ap.parse_args())
 # main
+# ignore warnings
+warnings.simplefilter('ignore', BiopythonWarning)
 parser = PDBParser()
 s = parser.get_structure("name", args['input_file'])
 model = s[0]
