@@ -2,7 +2,11 @@
 import os
 from Bio.PDB import *
 import pandas as pd
+import warnings
+from Bio import BiopythonWarning
 # main
+# ignore warnings
+warnings.simplefilter('ignore', BiopythonWarning)
 # retrieves each pdb file on the current directory and calculates the secondary structure percentage
 for filename in sorted(os.listdir(str(os.getcwd()))):
     if filename.endswith(".pdb"):

@@ -3,10 +3,14 @@ import argparse
 import os
 from Bio.PDB import *
 import pandas as pd
+import warnings
+from Bio import BiopythonWarning
 # input parameters
 ap = argparse.ArgumentParser(description="search for pdb files in the current directory, run DSSP, calculate the percentage of secondary structures for each pdb and export a txt file with the file names as rows and the secondary structure as columns")
 ap.add_argument("-out", "--output", required=True, help="output txt file")
 args = vars(ap.parse_args())
+# ignore warnings
+warnings.simplefilter('ignore', BiopythonWarning)
 # retrieve fasta file names
 file_list = []
 for filename in sorted(os.listdir(str(os.getcwd()))):
