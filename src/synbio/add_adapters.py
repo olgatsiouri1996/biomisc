@@ -4,7 +4,7 @@ from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 # imput parameters
-ap = argparse.ArgumentParser()
+ap = argparse.ArgumentParser(description = "add a left or right adapter or both in a single or multi-fasta file")
 ap.add_argument("-i", "--input", required=True,  help="input single or multi fasta file")
 ap.add_argument("-l", "--left", required=False, type=str, default="",  help="adapter to the left of the sequence. Default is no left adapter sequence to add")
 ap.add_argument("-r", "--right", required=False, type=str, default="",  help="adapter to the right of the sequence. Default is no right adapter sequence to add")
