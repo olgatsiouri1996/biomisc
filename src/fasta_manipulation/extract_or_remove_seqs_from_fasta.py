@@ -8,7 +8,7 @@ from Bio.SeqRecord import SeqRecord
 ap = argparse.ArgumentParser()
 ap.add_argument("-in", "--input", required=True, help="input fasta file")
 ap.add_argument("-out", "--output", required=False, help="output fasta file")
-ap.add_argument("-pro", "--program",type=int, default=1, required=False, help="choose to exract or remove( 1) extract, 2) remove, 3) extract and export as single-fasta files, 4) remove and export as single-fasta files. Defaults to 1)")
+ap.add_argument("-pro", "--program",type=int, default=1, required=False, help="choose to exract or remove: 1) extract, 2) remove, 3) extract and export as single-fasta files, 4) remove and export as single-fasta files. Defaults to 1)")
 ap.add_argument("-headers", "--headers", required=True, help="file with fasta headers to retrieve the output fasta sequences")
 ap.add_argument("-dir", "--directory", required=False, type=str, default='.', help="relative or absolute path to the output directory to save the single-fasta files. Default is the current directory")
 args = vars(ap.parse_args())
