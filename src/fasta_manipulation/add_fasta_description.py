@@ -10,7 +10,7 @@ ap.add_argument("-d", "--descriptions", required=True, help="input 1-column txt 
 ap.add_argument("-o", "--output", required=True,  help="output fasta file")
 args = vars(ap.parse_args())
 # main
-# import file fasta fasta_descriptions
+# import file with fasta descriptions
 with open(args['descriptions'], 'r') as f:
     fasta_descriptions = f.readlines()
 fasta_descriptions = [x.strip() for x in fasta_descriptions]
