@@ -27,7 +27,7 @@ if program == 1:
     # iterate input headers to extract sequences and export as multi-fasta
     sys.stdout = open(args['output'], 'a')
     for header in headers:
-        print(''.join([">",str(header)]))
+        print(''.join([">",features[str(header)].long_name]))
         print('\n'.join(split_every_60(features[str(header)][:].seq)))
     sys.stdout.close()
 else:
@@ -35,6 +35,6 @@ else:
     os.chdir(args['directory'])
     for header in headers:
         sys.stdout = open(''.join([str(header),".fasta"]), 'a')
-        print(''.join([">",str(header)]))
+        print(''.join([">",features[str(header)].long_name]))
         print('\n'.join(split_every_60(features[str(header)][:].seq)))
         sys.stdout.close()
