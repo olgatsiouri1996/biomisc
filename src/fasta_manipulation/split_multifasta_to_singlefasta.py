@@ -18,6 +18,6 @@ os.chdir(args['directory'])
 # export each record to a single-fasta    
 for key in features.keys():
     sys.stdout = open(''.join([str(key),".fasta"]), 'a')
-    print(''.join([">",str(key)]))
+    print(''.join([">",features[str(key)].long_name]))
     print('\n'.join(split_every_60(features[str(key)][:].seq)))
     sys.stdout.close()
