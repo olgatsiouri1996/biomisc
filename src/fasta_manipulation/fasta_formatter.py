@@ -20,7 +20,7 @@ if args['program'] == 1:
     # export to a new fasta file
     sys.stdout = open(args['output'], 'a')
     for record in SeqIO.parse(args['input'],'fasta'):
-            print(">"+record.id)
+            print("".join([">",record.id,"\t",record.description]))
             print('\n'.join(split_every_width(str(record.seq), args['width']))) # add characters in new line after the number of characters surpasses the input width 
     sys.stdout.close()
 elif args['program'] == 2:
@@ -30,7 +30,7 @@ elif args['program'] == 2:
             # export to new fasta files with the user imported width value
             sys.stdout = open(''.join([filename.split(".")[0],"_","w",str(args['width']),".fasta"]), 'a')
             for record in SeqIO.parse(filename,'fasta'):
-                    print(">"+record.id)
+                    print("".join([">",record.id,"\t",record.description]))
                     print('\n'.join(split_every_width(str(record.seq), args['width']))) # add characters in new line after the number of characters surpasses the input width 
             sys.stdout.close()
 else:
@@ -43,7 +43,7 @@ else:
         # export to new fasta files with the user imported width value
         sys.stdout = open(''.join([str(a),"_","w",str(b),".fasta"]), 'a')
         for record in SeqIO.parse(''.join([str(a),".fasta"]),'fasta'):
-            print(">"+record.id)
+            print("".join([">",record.id,"\t",record.description]))
             print('\n'.join(split_every_width(str(record.seq), int(b)))) # add characters in new line after the number of characters surpasses the input width 
         sys.stdout.close()
 
