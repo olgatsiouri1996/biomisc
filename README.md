@@ -14,6 +14,6 @@ collection of  miscellaneous command line bioinformatic scripts(see the wiki pag
 3. subset pdb suite: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6510024.svg)](https://doi.org/10.5281/zenodo.6510024)
 4. trim fasta by coords: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6468951.svg)](https://doi.org/10.5281/zenodo.6468951)
 5. trim protein by coords: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6468793.svg)](https://doi.org/10.5281/zenodo.6468793)
-6. extract seqs from fasta optimized: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6471512.svg)](https://doi.org/10.5281/zenodo.6471512)
+6. extract seqs from fasta optimized: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6641993.svg)](https://doi.org/10.5281/zenodo.6641993)
 7. fasta to header: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6471530.svg)](https://doi.org/10.5281/zenodo.6471530) 
-
+8. split multi-fasta to single-fasta: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6642008.svg)](https://doi.org/10.5281/zenodo.6642008)
