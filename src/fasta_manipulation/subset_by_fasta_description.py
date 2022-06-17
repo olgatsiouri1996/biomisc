@@ -5,7 +5,7 @@ from pyfaidx import Fasta
 # input parameters
 ap = argparse.ArgumentParser()
 ap.add_argument("-in", "--input", required=True, help="input multi-fasta file")
-ap.add_argument("-ma", "--match", required=True, type=str, help="word to search in each fasta header")
+ap.add_argument("-ma", "--match", required=True, type=str, help="word or phrase to search in each fasta header")
 ap.add_argument("-out", "--output", required=True, help="output multi-fasta file")
 args = vars(ap.parse_args())
 # main
