@@ -9,7 +9,7 @@ args = vars(ap.parse_args())
 # main
 # import fasta file
 features = Fasta(args['input'])
-# export to 1-column txt file
+# export to a bed file
 with open(args['bed'], 'w') as filehandle:
     for key in features.keys():
         filehandle.write('%s\n' % '\t'.join([key,"1",str(features[key][:].end)]))
