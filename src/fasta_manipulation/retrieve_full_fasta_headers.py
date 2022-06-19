@@ -2,7 +2,7 @@
 import argparse
 from pyfaidx import Fasta
 # input parameters
-ap = argparse.ArgumentParser()
+ap = argparse.ArgumentParser(description="retrieve fasta identifiers and their descriptions")
 ap.add_argument("-in", "--input", required=True, help="input multi-fasta file")
 ap.add_argument("-headers", "--headers", required=True, help="1-column txt file to save the output fasta headers with descriptions")
 args = vars(ap.parse_args())
