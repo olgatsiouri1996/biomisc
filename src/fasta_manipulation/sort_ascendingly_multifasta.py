@@ -4,7 +4,7 @@ import argparse
 from pyfaidx import Fasta
 import re
 # input parameters
-ap = argparse.ArgumentParser(description="sorts a multi-fasta with fasta identifiers consisting of letters and integers ascendingly")
+ap = argparse.ArgumentParser(description="sorts a multi-fasta with fasta identifiers(which after the prefix do not have leading 0s) consisting of letters and integers ascendingly")
 ap.add_argument("-in", "--input", required=True, help="input multi-fasta file")
 ap.add_argument("-out", "--output", required=True, help="output multi-fasta file")
 args = vars(ap.parse_args())
