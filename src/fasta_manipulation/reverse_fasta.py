@@ -2,7 +2,7 @@
 import argparse
 from Bio import SeqIO
 # input parameters
-ap = argparse.ArgumentParser(description="reverse a multi or single-fasta file")
+ap = argparse.ArgumentParser(description="reverse the sequences of a multi or single-fasta file")
 ap.add_argument("-in", "--input_file", required=True, help="input fasta file")
 ap.add_argument("-out", "--output_file", required=True, help="output fasta file")
 args = vars(ap.parse_args())
