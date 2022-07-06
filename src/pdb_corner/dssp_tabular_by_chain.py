@@ -38,7 +38,7 @@ if args['program'] == 1:
             df.to_csv(header = ['chain','residue_number','residue_name', 'residue_structure'], index = False, sep= "\t", doublequote= False, line_terminator= '\n')
         )
 else:
-    df = df.loc[int(args['start'] -1):int(args['end'] -2)]
+    df = df.loc[int(args['start'] -1):int(args['end'] -1)]
     # export
     with open(args['output'], 'a') as f:
         f.write(
