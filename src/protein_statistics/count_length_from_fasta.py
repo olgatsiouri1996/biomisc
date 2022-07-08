@@ -1,7 +1,6 @@
 # python3
 import argparse
-from Bio import SeqIO
-import pandas as pd
+from pyfaidx import Fasta
 # input parameters
 ap = argparse.ArgumentParser()
 ap.add_argument("-in", "--input", required=True, help="input fasta file")
@@ -11,46 +10,22 @@ ap.add_argument("-min", "--min", required=False, default=1, help="min number of 
 ap.add_argument("-out", "--output", required=True, help="output txt file, with columns the id, length and fasta descriptions")
 args = vars(ap.parse_args())
 # main
-headers = []
-lengths = []
-descriptions = [] # setup  empty lists
+# create function to split the input sequence based on a specific number of characters(60)
+def split_every_60(s): return [str(s)[i:i+60] for i in range(0,len(str(s)),60)]
+# create fasta index
+features = Fasta(args['input'])
 # choose program
 program = args['program']
 # export for all sequences
 if program == 1:
-    for record in SeqIO.parse(args['input'], "fasta"):
-        # add this record to the lists
-        lengths.append(len(record.seq))
-        headers.append(record.id)
-        descriptions.append(str(record.description).split(record.id)[1])
-    # create data frame
-    df = pd.DataFrame()
-    df['id'] = headers
-    df['length'] = lengths
-    df['description'] = descriptions
-    #print(df)
-    # export
-    with open(args['output'], 'a') as f:
-        f.write(
-            df.to_csv(header = True, index = False, sep= "\t", doublequote= False, escapechar='\\', line_terminator= '\n')
-        )
+   # export to txt
+    with open(args['output'], 'w') as filehandle:
+        for key in features.keys():
+            filehandle.write('%s\n' % '\t'.join([key,str(features[key][:].end),str(features[key].long_name).split(key)[1]]))
 # subset based on max, min values
 else:
-    for record in SeqIO.parse(args['input'], "fasta"):
-        if float(args['min']) <= len(record.seq) <= float(args['max']):
-            # add this record to the list
-            headers.append(record.id)
-            lengths.append(len(record.seq))
-            descriptions.append(str(record.description).split(record.id)[1])
-    # create data frame
-    df = pd.DataFrame()
-    df['id'] = headers
-    df['length'] = lengths
-    df['description'] = descriptions
-    # export
-    with open(args['output'], 'a') as f:
-        f.write(
-            df.to_csv(header = True, index = False, sep= "\t", escapechar='\\', line_terminator= '\n')
-        )
-
-
+    # export to txt
+    with open(args['output'], 'w') as filehandle:
+        for key in features.keys():
+            if int(args['min']) <= features[key][:].end <= int(args['max']):
+                filehandle.write('%s\n' % '\t'.join([key,str(features[key][:].end),str(features[key].long_name).split(key)[1]]))
