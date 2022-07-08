@@ -11,7 +11,6 @@ ap.add_argument("-max", "--max", required=False, default=300, help="max number o
 ap.add_argument("-min", "--min", required=False, default=1, help="min number of sequence length. Default is 1")
 ap.add_argument("-headers", "--headers", required=False, help="file to save the output fasta headers")
 args = vars(ap.parse_args())
-
 # main
 # choose program
 program = args['program']
