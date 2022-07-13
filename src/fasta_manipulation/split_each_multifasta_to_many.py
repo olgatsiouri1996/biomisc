@@ -28,4 +28,4 @@ for filename in sorted(os.listdir(str(os.getcwd()))):
                 print(''.join([">",features[str(key)].long_name]))
                 print('\n'.join(split_every_60(features[str(key)][:].seq)))
             sys.stdout.close()
-        del features; keyslist.clear(); split_lists.clear
+        del features; keyslist.clear(); split_lists.clear()
