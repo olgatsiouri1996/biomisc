@@ -6,7 +6,7 @@ import pandas as pd
 import warnings
 # input parameters
 ap = argparse.ArgumentParser()
-ap.add_argument("-bed", "--bed", required=True, help="input bed file(made with bedops)")
+ap.add_argument("-bed", "--bed", required=True, help="input bed file(made with bedops, every feature in the \'.gff\' or \'.gff3\' file should have an \'ID\' tag in the \'attributes\' column)")
 ap.add_argument("-in", "--input", required=True, help="input fasta file")
 ap.add_argument("-out", "--output", required=True, help="output fasta file")
 ap.add_argument("-fea", "--feature", required=False, default='gene',  type=str, help="specify the pattern to select the lines that have it. Default is \'gene\'")
