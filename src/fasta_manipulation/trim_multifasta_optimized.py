@@ -7,7 +7,7 @@ ap = argparse.ArgumentParser(description="index and trim an imput multi-fasta fi
 ap.add_argument("-in", "--input", required=True, help="input multi-fasta file")
 ap.add_argument("-start", "--start", required=False, default=0, type=int, help="number of nucleotides/amino acids to trim from the start of the sequence. Default is 0")
 ap.add_argument("-end", "--end", required=False, default=0, type=int, help="number of nucleotides/amino acids to trim from the start of the sequence. Default is 0")
-ap.add_argument("-out", "--output", required=True, help="output multi-fastafasta file")
+ap.add_argument("-out", "--output", required=True, help="output multi-fasta file")
 args = vars(ap.parse_args())
 # main
 # create function to split the input sequence based on a specific number of characters(60)
