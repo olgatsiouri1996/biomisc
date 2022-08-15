@@ -17,6 +17,6 @@ features = Fasta(args['input'])
 # export trimmed sequences to an output multi-fasta file
 sys.stdout = open(args['output'], 'a')
 for key in features.keys():
-    print(''.join([">",features[key].long_name," ",str(features[str(key)][args['start']:int(features[key][:].end - args['end'])].start),"-",str(features[str(key)][args['start']:int(features[key][:].end - args['end'])].end)]))
+    print(''.join([">",features[key].long_name," ",str(features[str(key)][args['start']:int(features[key][:].end - args['end'])].start),"-",str(features[str(key)][args['start']:int(features[key][:].end - args['end'])].end)]).replace('\r', ''))
     print('\n'.join(split_every_60(features[str(key)][args['start']:int(features[key][:].end - args['end'])].seq)))
 sys.stdout.close()

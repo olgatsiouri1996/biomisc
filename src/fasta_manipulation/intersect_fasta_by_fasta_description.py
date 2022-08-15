@@ -20,7 +20,7 @@ sys.stdout = open(args['output'], 'a')
 # iterate the following 2 lists
 for key in features1.keys():
     if args['match'] in features1[key].long_name:
-        print(''.join([">",features2[key].long_name]))
+        print(''.join([">",features2[key].long_name])replace('\r',''))
         print('\n'.join(split_every_60(features2[key][:].seq)))
 sys.stdout.close()
 

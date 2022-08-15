@@ -37,10 +37,10 @@ for org in orgs:
     sys.stdout = open(''.join([org,"_",args['feature'],".fasta"]), 'a')
     for (a, b, c, d, e) in zip(ids, chrom, start, end, strand):
         if str(e) == "+":
-            print(''.join([">",str(a)," ",str(b),":",str(int(c) + 1),"-",str(d)]))
+            print(''.join([">",str(a)," ",str(b),":",str(int(c) + 1),"-",str(d)]).replace('\r', ''))
             print('\n'.join(split_every_60(features[str(b)][int(c):int(d)].seq)))
         else:
-            print(''.join([">",str(a)," ",str(b),":",str(int(c) + 1),"-",str(d)," ","reverse complement"]))
+            print(''.join([">",str(a)," ",str(b),":",str(int(c) + 1),"-",str(d)," ","reverse complement"]).replace('\r', ''))
             print('\n'.join(split_every_60(features[str(b)][int(c):int(d)].reverse.complement.seq)))
     sys.stdout.close()
 

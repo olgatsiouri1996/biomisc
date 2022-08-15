@@ -25,6 +25,6 @@ for lis in split_lists:
     count = count + 1
     sys.stdout = open(''.join([str(args['input']).split('.fa')[0],"_","part",str(count),".fasta"]), 'a')
     for key in lis:
-        print(''.join([">",features[str(key)].long_name]))
+        print(''.join([">",features[str(key)].long_name]).replace('\r', ''))
         print('\n'.join(split_every_60(features[str(key)][:].seq)))
     sys.stdout.close()

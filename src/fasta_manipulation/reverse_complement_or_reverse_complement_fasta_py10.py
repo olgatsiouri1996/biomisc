@@ -19,18 +19,18 @@ match program:
     case 1:
         sys.stdout = open(args['output'], 'a')
         for key in features.keys():
-            print(''.join([">",features[key].long_name]))
+            print(''.join([">",features[key].long_name]).replace('\r',''))
             print('\n'.join(split_every_60(features[str(key)][:].reverse.complement.seq)))
         sys.stdout.close()
     case 2:
         sys.stdout = open(args['output'], 'a')
         for key in features.keys():
-            print(''.join([">",features[key].long_name]))
+            print(''.join([">",features[key].long_name]).replace('\r',''))
             print('\n'.join(split_every_60(features[key][:].reverse.seq)))
         sys.stdout.close()
     case 3:
         sys.stdout = open(args['output'], 'a')
         for key in features.keys():
-            print(''.join([">",features[key].long_name]))
+            print(''.join([">",features[key].long_name]).replace('\r',''))
             print('\n'.join(split_every_60(features[key][:].complement.seq)))
         sys.stdout.close()

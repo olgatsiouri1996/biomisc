@@ -15,7 +15,7 @@ def split_every_60(s): return [str(s)[i:i+60] for i in range(0,len(str(s)),60)]
 # create function to slice based on window and step
 def slice_by_winstep(rec):
     for i in range(0, features[rec][:].end - args['window'] + 1, args['step']):
-        print(''.join([">",rec,"_",str(i+1),"_",str(i + args['window'])]))
+        print(''.join([">",rec,"_",str(i+1),"_",str(i + args['window'])]).replace('\r', ''))
         print('\n'.join(split_every_60(features[rec][i:i + args['window']].seq)))
     return
 # import multi or single-fasta file

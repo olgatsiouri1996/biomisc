@@ -14,6 +14,6 @@ features = Fasta(args['input'], duplicate_action="first")
 # select sequences
 sys.stdout = open(args['output'], 'a')
 for key in features.keys():
-    print(''.join([">",features[key].long_name]))
+    print(''.join([">",features[key].long_name]).replace('\r',''))
     print('\n'.join(split_every_60(features[key][:].seq)))
 sys.stdout.close()

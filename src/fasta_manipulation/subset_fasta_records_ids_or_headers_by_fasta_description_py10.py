@@ -23,7 +23,7 @@ match program:
         sys.stdout = open(args['output'], 'a')
         for header in features.keys():
             if args['match'] in features[str(header)].long_name:
-                print(''.join([">",features[str(header)].long_name]))
+                print(''.join([">",features[str(header)].long_name]).replace('\r', ''))
                 print('\n'.join(split_every_60(features[str(header)][:].seq)))
         sys.stdout.close()
     case 2:
