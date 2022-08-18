@@ -1,34 +1,27 @@
 # python3
-import os
+import sys
 import argparse
-from Bio import SeqIO
-from Bio.SeqRecord import SeqRecord
-from Bio.Seq import Seq
+from pyfaidx import Fasta
 # input parameters
 ap = argparse.ArgumentParser()
-ap.add_argument("-in", "--input_file", required=True, help="input single or multi-fasta file")
-ap.add_argument("-out", "--output_file", required=False, help="output multi-fasta file")
-ap.add_argument("-step", "--step_size", required=True, help="step size for chunk creation, type = integer")
-ap.add_argument("-win", "--window_size", required=True, help="window size for chunk creation, type = integer")
-ap.add_argument("-pro", "--program", type=int, default=1, required=False, help="program output to select 1) 1 multi-fasta file 2) many single-fasta files. Default is 1")
-ap.add_argument("-dir", "--directory", required=False,default='.', type=str, help="output directory to save the single-fasta files. Default is the current directory")
+ap.add_argument("-in", "--input", required=True, help="input single or multi-fasta file")
+ap.add_argument("-out", "--output", required=True, help="output multi-fasta file")
+ap.add_argument("-step", "--step", required=True, type=int, help="step size for chunk creation, type = integer")
+ap.add_argument("-win", "--window", required=True, type=int, help="window size for chunk creation, type = integer")
 args = vars(ap.parse_args())
 # main
-seqs = []
-headers = [] 
-chunks = []# setup empty lists
+# create function to split the input sequence based on a specific number of characters(60)
+def split_every_60(s): return [str(s)[i:i+60] for i in range(0,len(str(s)),60)]
+# create function to slice based on window and step
+def slice_by_winstep(rec):
+    for i in range(0, features[rec][:].end - args['window'] + 1, args['step']):
+        print(''.join([">",rec,"_start_",str(i+1),"_stop_",str(i + args['window'])]).replace('\r',''))
+        print('\n'.join(split_every_60(features[rec][i:i + args['window']].seq)))
+    return
 # import multi or single-fasta file
-for record in SeqIO.parse(args['input_file'], "fasta"):
-	for i in range(0, len(record.seq) - int(args['window_size']) + 1, int(args['step_size'])):
-		seqs.append(record.seq[i:i + int(args['window_size'])])
-		headers.append('_'.join([record.id,str(i + 1)]))
-# export to multi or single-fasta
-for (seq, header) in zip(seqs,headers):
-	chunks.append(SeqRecord(Seq(str(seq)),id=str(header),description=""))
-if args['program']==1:
-	SeqIO.write(chunks,args['output_file'], "fasta")
-else:
-	# set working directory
-	os.chdir(args['directory'])
-	for chunk in chunks:	
-		SeqIO.write(chunk, ''.join([str(chunk.id),".fasta"]), "fasta")
+features = Fasta(args['input'])
+# iterate input headers to extract sequences and export as multi-fasta
+sys.stdout = open(args['output'], 'a')
+for key in features.keys():
+    slice_by_winstep(key)
+sys.stdout.close()
