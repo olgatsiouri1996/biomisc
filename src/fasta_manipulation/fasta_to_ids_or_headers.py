@@ -4,7 +4,7 @@ import sys
 import pyfastx
 # input arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-in", "--input", required=True, help="input fasta file")
+ap.add_argument("-in", "--input", required=True, help="input fasta file(all fasta records should either have no fasta description or all of them should have fasta description)")
 ap.add_argument("-txt", "--txt", required=True,  help="1 or 2-column txt file to save the output fasta identifiers or full fasta  headers with identifier and description respectively")
 ap.add_argument("-pro", "--program", required=False, type=int, default=1, help="program to choose: 1. retrieve only fasta identifiers 2. retrieve fasta identifiers and fasta headers (tab seperated). Default is 1")
 args = vars(ap.parse_args())
