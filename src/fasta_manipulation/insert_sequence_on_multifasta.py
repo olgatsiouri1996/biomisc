@@ -3,7 +3,7 @@ import sys
 import argparse
 from pyfaidx import Fasta
 # input parameters
-ap = argparse.ArgumentParser(description="insert a sequence at a specific positions in a multi-fasta file")
+ap = argparse.ArgumentParser(description="insert a sequence at specific positions in a multi-fasta file")
 ap.add_argument("-in", "--input", required=True, help="input multi-fasta file")
 ap.add_argument("-is", "--insert", required=True, help="input single-fasta file with the sequence to insert")
 ap.add_argument("-pos", "--position", required=True, help="tab seperated 2-column txt file with id and positions (in the fasta file after which to insert the sequence) as columns")
