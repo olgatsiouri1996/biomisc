@@ -12,7 +12,8 @@ args = vars(ap.parse_args())
 # main
 # setup empty lists
 ids = []
-positions = []
+start = []
+end = []
 # import txt with positions
 with open(args['position'], 'r') as f:
     for line in f:
