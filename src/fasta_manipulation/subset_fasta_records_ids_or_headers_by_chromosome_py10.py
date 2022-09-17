@@ -9,7 +9,7 @@ ap.add_argument("-ma", "--match", required=True, type=str, help="words to search
 ap.add_argument("-out", "--output", required=False, help="output multi-fasta file. File can be appended")
 ap.add_argument("-headers", "--headers", required=False, help="1 or 2-column tab seperated txt file to save the output fasta identifiers or full fasta headers respectively. File can be appended.")
 ap.add_argument("-pro", "--program", required=False, type=int, default=1, help="Program to choose: 1) collect fasta records with headers that match the pattern 2) collect only fasta identifiers, 3) collect full fasta headers(id and description are tab seperated). Default is 1")
-ap.add_argument("-act", "--action", required=False, type=str, default='extract',  help="choose to extract or remove based on the chromosome. Default is 1")
+ap.add_argument("-act", "--action", required=False, type=str, default='extract',  help="choose to extract or remove based on the chromosome. Default is extract")
 args = vars(ap.parse_args())
 # main
 # create function to split the input sequence based on a specific number of characters(60)
