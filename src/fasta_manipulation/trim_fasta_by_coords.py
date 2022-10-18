@@ -25,9 +25,9 @@ features = Fasta(args['input'])
 sys.stdout = open(args['output'], 'a')
 for (a, b, c, d) in zip(ids, seq_start, seq_end, seq_strand):
     if str(d) == "+":
-        print(''.join([">",str(a),"_",str(int(b) + 1),"_",str(c)]))
+        print(''.join([">",str(a),"_",str(b),"_",str(c)]))
         print('\n'.join(split_every_60(features[str(a)][int(b):int(c)].seq)))
     else:
-        print(''.join([">",str(a),"_",str(int(b) + 1),"_",str(c),"_","complement"]))
+        print(''.join([">",str(a),"_",str(b),"_",str(c),"_","complement"]))
         print('\n'.join(split_every_60(features[str(a)][int(b):int(c)].complement.seq)))
 sys.stdout.close()

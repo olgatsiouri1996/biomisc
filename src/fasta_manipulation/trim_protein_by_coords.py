@@ -23,6 +23,6 @@ features = Fasta(args['input'])
 # iterate all below lists in pairs
 sys.stdout = open(args['output'], 'a')
 for (a, b, c) in zip(ids, seq_start, seq_end):
-    print(''.join([">",str(a),"_",str(int(b) + 1),"_",str(c)]))
+    print(''.join([">",str(a),"_",str(b),"_",str(c)]))
     print('\n'.join(split_every_60(features[str(a)][int(b):int(c)].seq)))
 sys.stdout.close()
