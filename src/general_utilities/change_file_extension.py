@@ -4,9 +4,9 @@ import os
 # imput parameters
 ap = argparse.ArgumentParser()
 ap.add_argument("-in", "--input", required=False, help="input file to change the extension")
-ap.add_argument("-in", "--input", required=False, type=str, default='.fsta', help="input file extension")
-ap.add_argument("-ext", "--extension", required=False, type=str, default='.fasta', help="extension to change into")
-ap.add_argument("-num", "--number", required=False, type=str, default='one', choices=['one', 'many'], help="number of input file extensions. if set to many it can only be used to folders that contain only the files that you want to change the extension")
+ap.add_argument("-in", "--input", required=False, type=str, default='.fsta', help="input file extension. Default is .fsta")
+ap.add_argument("-ext", "--extension", required=False, type=str, default='.fasta', help="extension to change into. Default is .fasta")
+ap.add_argument("-num", "--number", required=False, type=str, default='one', help="number of input file extensions: one, many. if set to many it can only be used to folders that contain only the files that you want to change the extension. Default is one")
 args = vars(ap.parse_args())
 # main
 # change the file extension
