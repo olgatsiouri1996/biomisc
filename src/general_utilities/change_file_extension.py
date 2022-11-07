@@ -4,17 +4,18 @@ import os
 # imput parameters
 ap = argparse.ArgumentParser()
 ap.add_argument("-in", "--input", required=False, help="input file to change the extension")
+ap.add_argument("-in", "--input", required=False, type=str, default='.fsta', help="input file extension")
 ap.add_argument("-ext", "--extension", required=False, type=str, default='.fasta', help="extension to change into")
-ap.add_argument("-num", "--number", required=False, type=str, default='one', help="number of  files to change extensions: one, many. Default is one")
+ap.add_argument("-num", "--number", required=False, type=str, default='one', choices=['one', 'many'], help="number of input file extensions. if set to many it can only be used to folders that contain only the files that you want to change the extension")
 args = vars(ap.parse_args())
 # main
-# function to change the file extension
-def change_extension(fi):
-    base = os.path.splitext(fi)[0]
-    os.rename(fi, base + args['extension'])
-# choose number of input files
-if args['number'] == 'one':
-    change_extension(args['input'])
+# change the file extension
+if args['number']=='one':
+    for filename in sorted(os.listdir(os.getcwd())):
+        if filename.endswith(args['input']):
+            base = os.path.splitext(filename)[0]
+            os.rename(filename, base + args['extension'])
 else:
     for filename in sorted(os.listdir(os.getcwd())):
-        change_extension(filename)
+        base = os.path.splitext(filename)[0]
+        os.rename(filename, base + args['extension'])
