@@ -3,7 +3,7 @@ import os
 import sys
 import argparse
 from pyfaidx import Fasta
-# input parameters
+# input parameters`
 ap = argparse.ArgumentParser()
 ap.add_argument("-in", "--input", required=True, help="input multi-fasta file")
 ap.add_argument("-ids", "--ids", required=True, help="file with fasta headers to retrieve the output fasta sequences")
@@ -15,9 +15,7 @@ args = vars(ap.parse_args())
 # create function to split the input sequence based on a specific number of characters(60)
 def split_every_60(s): return [str(s)[i:i+60] for i in range(0,len(str(s)),60)]
 # import the txt file with headers you want to extract the sequence from the input fasta
-with open(args['ids'], 'r') as f:
-    headers = f.readlines()
-headers = [x.strip() for x in headers]
+headers = (line.rstrip() for line in open(args['ids']))
 # import fasta file
 features = Fasta(args['input'])
 # choose program
@@ -27,7 +25,7 @@ if program == 1:
     # iterate input headers to extract sequences and export as multi-fasta
     sys.stdout = open(args['output'], 'a')
     for header in headers:
-        print(''.join([">",features[str(header)].long_name]))
+        print(''.join([">",features[str(header)].long_name]).replace('\r',''))
         print('\n'.join(split_every_60(features[str(header)][:].seq)))
     sys.stdout.close()
 elif program == 2:
@@ -35,7 +33,7 @@ elif program == 2:
     os.chdir(args['directory'])
     for header in headers:
         sys.stdout = open(''.join([str(header),".fasta"]), 'a')
-        print(''.join([">",features[str(header)].long_name]))
+        print(''.join([">",features[str(header)].long_name]).replace('\r',''))
         print('\n'.join(split_every_60(features[str(header)][:].seq)))
         sys.stdout.close()
 elif program == 3:
@@ -46,11 +44,11 @@ elif program == 3:
     # export to 1 multi-fasta
     sys.stdout = open(args['output'], 'a')
     for key in keyslist:
-        print(''.join([">",features[str(key)].long_name]))
+        print(''.join([">",features[str(key)].long_name]).replace('\r',''))
         print('\n'.join(split_every_60(features[str(key)][:].seq)))
     sys.stdout.close()
 else:
-    # remove ids
+   # remove ids
     keyslist = list(features.keys())
     for header in headers:
         keyslist.remove(header)
@@ -58,6 +56,6 @@ else:
     os.chdir(args['directory'])
     for key in keyslist:
         sys.stdout = open(''.join([str(key),".fasta"]), 'a')
-        print(''.join([">",features[str(key)].long_name]))
+        print(''.join([">",features[str(key)].long_name]).replace('\r',''))
         print('\n'.join(split_every_60(features[str(key)][:].seq)))
         sys.stdout.close()
