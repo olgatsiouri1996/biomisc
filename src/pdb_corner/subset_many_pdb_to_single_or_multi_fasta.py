@@ -7,7 +7,8 @@ from biopandas.pdb import PandasPdb
 ap = argparse.ArgumentParser(description="converts each pdb files into single fasta files or makes a multi-fasta file based on the chain, start and end locations")
 ap.add_argument("-in", "--input", required=True, help="input 4-column txt file with pdb filename(no extension),chain,start and end coordinates")
 ap.add_argument("-mfa", "--multifasta", required=False, help="output multi-fasta file")
-ap.add_argument("-dir", "--directory", required=False, type=str, default='.', help="directory to search for pdb files(the directory can contain many filetypes).Default is the current directory")
+ap.add_argument("-dir", "--directory", required=False, type=str, default='', help="directory to search for pdb files(the directory can contain many filetypes). Default is the current directory")
+ap.add_argument("-out", "--output", required=False, type=str, default='', help="directory to save the single fasta files(the directory can contain many filetypes). Default is the current directory")
 ap.add_argument("-type", "--type", required=False,default=1, type=int, help="type of output to choose: 1) 1 multi-fasta file, 2) many single-fasta files. Default is 1")
 args = vars(ap.parse_args())
 # main
@@ -22,7 +23,7 @@ end = (int(str(line.rstrip()).split()[3]) for line in open(args['input']))
 def trim_to_fasta(fi,ch,st,en):
     # insert pdb file
     ppdb = PandasPdb()
-    ppdb.read_pdb(''.join([fi,'.pdb']))
+    ppdb.read_pdb(os.path.join(args['directory'],''.join([fi,'.pdb'])))
     # convert 3 letters aa to 1
     one = ppdb.amino3to1()
     # select chain and convert to string
@@ -32,8 +33,6 @@ def trim_to_fasta(fi,ch,st,en):
     # remove dataframes and lists
     del ppdb; del one
     return prot
-# select input dir
-os.chdir(args['directory'])
 # select between exporting 1 or many fasta files
 if args['type'] == 1:
     sys.stdout = open(args['multifasta'],'a')
@@ -43,7 +42,7 @@ if args['type'] == 1:
     sys.stdout.close()
 else:
     for (a,b,c,d) in zip(pdbname,chain,start,end):
-        sys.stdout = open(''.join([a,"_",b,"_",str(c),"_",str(d),".fasta"]), 'a')
+        sys.stdout = open(os.path.join(args['output'],''.join([a,"_",b,"_",str(c),"_",str(d),".fasta"])), 'a')
         print(''.join([">",a,"_",b,"_",str(c),"_",str(d)]).replace('\r',''))
         print('\n'.join(split_every_60(trim_to_fasta(a,b,c,d))))
         sys.stdout.close()            
