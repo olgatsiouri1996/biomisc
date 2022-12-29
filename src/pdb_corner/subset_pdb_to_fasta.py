@@ -4,14 +4,17 @@ import sys
 import argparse
 from biopandas.pdb import PandasPdb
 # input parameters
-ap = argparse.ArgumentParser(description="converts a pdb file into a fasta file based on the chain, start and end locations")
+ap = argparse.ArgumentParser(description="converts a pdb file into a single or multi-fasta file based on the chain, start and end locations")
 ap.add_argument("-in", "--input", required=False, help="input pdb file")
-ap.add_argument("-dir", "--directory", required=False, type=str, default='.', help="directory to search for pdb files(the directory can contain many filetypes). Default is the current directory")
-ap.add_argument("-chain", "--chain", required=False, default='A', help="chain from pdb file to select.Default is A")
+ap.add_argument("-fasta", "--fasta", required=False, help="output multi-fasta file")
+ap.add_argument("-dir", "--directory", required=False, type=str, default='', help="directory to search for pdb files(the directory can contain many filetypes). Default is the current directory")
+ap.add_argument("-out", "--output", required=False, type=str, default='', help="directory to save 1 or more single-fasta files(the directory can contain many filetypes). Default is the current directory")
+ap.add_argument("-chain", "--chain", required=False, default='A', help="chain from pdb file to select. Default is A")
 ap.add_argument("-start", "--start", required=False, default=1, type=int, help="amino acid in chain to start writing the fasta file. Default is 1")
 ap.add_argument("-end", "--end", required=False, type=int, help="amino acid in chain to end writing the fasta file")
-ap.add_argument("-type", "--type", required=False,default=1, type=int, help="type of input to choose: 1) 1 pdb file, 2) many pdb files. Defaults to 1")
-ap.add_argument("-pro", "--program", required=False,default=1, type=int,help="program to choose: 1) add both start and end location 2) the end location will be that of the latest amino acid in the chain. Defaults to 1")
+ap.add_argument("-type", "--type", required=False,default=1, type=int, help="type of input to choose: 1) 1 pdb file, 2) many pdb files. Default is 1")
+ap.add_argument("-pro", "--program", required=False,default=1, type=int, help="program to choose: 1) add both start and end location 2) the end location will be that of the latest amino acid in the chain. Default is 1")
+ap.add_argument("-mfa", "--multifasta", required=False,default='no', type=str, help="output as multi-fasta?. Default is no")
 args = vars(ap.parse_args())
 # main
 # create function to split the input sequence based on a specific number of characters(60)
@@ -39,21 +42,28 @@ def trim_to_fasta(fi):
         basename = str(os.path.basename(fi)).split('.')[0]
     else:
         basename = str(fi).split('.')[0]
-    # if 1 pdb file only select output directory
-    if args['type'] == 1:
-        os.chdir(os.path.dirname(fi))
-    else:
-        pass
     # export to fasta
-    sys.stdout = open(''.join([basename,"_",args['chain'],"_",str(args['start']),"_",str(seq_end),".fasta"]), 'a')
-    print(''.join([">",basename,"_",args['chain'],"_",str(args['start']),"_",str(seq_end)]).replace('\r',''))
-    print('\n'.join(split_every_60(prot)))
-    sys.stdout.close()
+    if args['multifasta']=='no':
+        sys.stdout = open(os.path.join(args['output'],''.join([basename,"_",args['chain'],"_",str(args['start']),"_",str(seq_end),".fasta"])), 'a')
+        print(''.join([">",basename,"_",args['chain'],"_",str(args['start']),"_",str(seq_end)]).replace('\r',''))
+        print('\n'.join(split_every_60(prot)))
+        sys.stdout.close()
+    else:
+        print(''.join([">",basename,"_",args['chain'],"_",str(args['start']),"_",str(seq_end)]).replace('\r',''))
+        print('\n'.join(split_every_60(prot)))            
 # select between importing 1 or many pdb files
 if args['type'] == 1:
     trim_to_fasta(args['input'])
 else:
      # import each pdb file from the working directory
-    for filename in sorted(os.listdir(os.chdir(args['directory']))):
-        if filename.endswith(".pdb"):
-           trim_to_fasta(filename)
+    if args['multifasta']=='no':
+        for filename in sorted(os.listdir(os.chdir(args['directory']))):
+            if filename.endswith(".pdb"):
+               trim_to_fasta(filename)
+    else:
+        sys.stdout = open(args['fasta'],'a')
+        for filename in sorted(os.listdir(os.chdir(args['directory']))):
+            if filename.endswith(".pdb"):
+               trim_to_fasta(filename)
+        sys.stdout.close()
+
