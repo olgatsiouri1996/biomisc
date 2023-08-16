@@ -7,7 +7,7 @@ import textwrap
 ap = argparse.ArgumentParser(description="use a txt file with fasta identifiers to extract or remove sequences from fasta file")
 ap.add_argument("-in", "--input", required=True,  help="input multi-fasta file")
 ap.add_argument("-ids", "--ids", required=True,  help="1 or multiple column tab seperated file with no column names, with fasta identifiers in the 1st column to retrieve the output fasta sequences. The 2nd column can contain the groupname the identifier belongs, to split into many multi-fasta files 1 per group name")
-ap.add_argument("-act", "--action",type=str, default='extract', required=False, choices=['extract','remove'], widget='Dropdown', help="choose to extract or remove sequences. Default extract")
+ap.add_argument("-act", "--action",type=str, default='extract', required=False, choices=['extract','remove'], help="choose to extract or remove sequences. Default extract")
 ap.add_argument("-ty", "--type", type=int, default=1, choices=range(1, 10),
                         help="Choose output type:\n"
                              "1: 1 multi-fasta file\n"
